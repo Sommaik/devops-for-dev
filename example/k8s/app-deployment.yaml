@@ -1,39 +1,36 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nginx-deployment
+  name: hello-deployment
   labels:
-    app: nginx
+    app: hello
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: nginx
+      app: hello
   template:
     metadata:
       labels:
-        app: nginx
+        app: hello
     spec:
       containers:
-        - name: nginx
-          image: nginx:alpine
+        - name: hello
+          image: registry.gitlab.com/hello #change image
           ports:
             - containerPort: 80
-          resources:
-            limits:
-              cpu: 500m
-            requests:
-              cpu: 200m
+      imagePullSecrets:
+        - name: regcred
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: nginx
+  name: hello
   labels:
-    run: nginx
+    run: hellos
 spec:
   ports:
     - port: 80
   selector:
-    app: nginx
+    app: hello
   type: LoadBalancer
